@@ -21,33 +21,22 @@ public class User extends Entity<Long> implements Serializable {
 	private Long id;
 	private String username;
 	private String name;
-	private String lastname;
 	private Set<Profile> profiles;
 	private String email;
 	private boolean enabled;
-	private String usuariosap;
-	private Boolean admin;
-	private String deposito;
-	private Long legajoFichaje;
 
 	public User() {
 
 	}
 
-	public User(Long id, String username, String name, String lastname, Set<Profile> profiles, String email,
-			String usuariosap, boolean enabled, Boolean admin, String deposito, Long legajoFichaje) {
+	public User(Long id, String username, String name, Set<Profile> profiles, String email, boolean enabled) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.name = name;
-		this.lastname = lastname;
 		this.profiles = profiles;
 		this.email = email;
-		this.usuariosap = usuariosap;
 		this.enabled = enabled;
-		this.admin = admin;
-		this.deposito = deposito;
-		this.legajoFichaje = legajoFichaje;
 	}
 
 	public Long getId() {
@@ -74,14 +63,6 @@ public class User extends Entity<Long> implements Serializable {
 		this.name = name;
 	}
 
-	public String getLastname() {
-		return lastname;
-	}
-
-	public void setLastname(String lastname) {
-		this.lastname = lastname;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -104,38 +85,6 @@ public class User extends Entity<Long> implements Serializable {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
-	}
-
-	public String getUsuariosap() {
-		return usuariosap;
-	}
-
-	public void setUsuariosap(String usuariosap) {
-		this.usuariosap = usuariosap;
-	}
-
-	public Boolean getAdmin() {
-		return admin;
-	}
-
-	public void setAdmin(Boolean admin) {
-		this.admin = admin;
-	}
-
-	public String getDeposito() {
-		return deposito;
-	}
-
-	public void setDeposito(String deposito) {
-		this.deposito = deposito;
-	}
-
-	public Long getLegajoFichaje() {
-		return legajoFichaje;
-	}
-
-	public void setLegajoFichaje(Long legajoFichaje) {
-		this.legajoFichaje = legajoFichaje;
 	}
 
 }

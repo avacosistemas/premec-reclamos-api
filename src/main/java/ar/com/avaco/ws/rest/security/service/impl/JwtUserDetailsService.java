@@ -7,20 +7,20 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-import ar.com.avaco.arc.sec.domain.Usuario;
-import ar.com.avaco.arc.sec.service.UsuarioService;
+import ar.com.avaco.arc.sec.domain.Cliente;
+import ar.com.avaco.arc.sec.service.ClienteService;
 
 @Service(value="jwtUserDetailsService")
 public class JwtUserDetailsService implements UserDetailsService {
 
 
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 
     
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
     	
-        Usuario user = (Usuario) this.usuarioService.loadUserByUsername(username);
+        Cliente user = (Cliente) this.clienteService.loadUserByUsername(username);
 
         if (user == null) {
             throw new UsernameNotFoundException(String.format("No user found with username '%s'.", username));
@@ -28,9 +28,9 @@ public class JwtUserDetailsService implements UserDetailsService {
         return user;
     }
     
-	@Resource(name = "usuarioService")
-	public void setUsuarioService(UsuarioService usuarioService) {
-		this.usuarioService = usuarioService;
+	@Resource(name = "clienteService")
+	public void setCService(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
 	
 }

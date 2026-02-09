@@ -49,7 +49,7 @@ public class Perfil extends ar.com.avaco.arc.core.domain.Entity<Long> {
 
 	/**
 	 * Determina si el Perfil esta activo. Si esta inactivo, no puede asignarse a un
-	 * usuario. Si ya se encuentra asignado, no deberían devolverse los permisos
+	 * cliente. Si ya se encuentra asignado, no deberían devolverse los permisos
 	 * asociados.
 	 */
 	@Column

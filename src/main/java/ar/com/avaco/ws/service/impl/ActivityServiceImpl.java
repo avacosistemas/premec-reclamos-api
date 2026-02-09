@@ -25,9 +25,9 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.google.common.collect.Lists;
 
-import ar.com.avaco.arc.sec.domain.Usuario;
-import ar.com.avaco.arc.sec.repository.UsuarioRepository;
-import ar.com.avaco.arc.sec.service.impl.UsuarioServiceImpl;
+import ar.com.avaco.arc.sec.domain.Cliente;
+import ar.com.avaco.arc.sec.repository.ClienteRepository;
+import ar.com.avaco.arc.sec.service.impl.ClienteServiceImpl;
 import ar.com.avaco.ws.dto.actividad.HorasPorEmpleadoDTO;
 import ar.com.avaco.ws.dto.actividad.RegistroPreviewEmpleadoMensualDTO;
 import ar.com.avaco.ws.dto.employee.liquidacion.FueraConvenio;
@@ -42,7 +42,7 @@ public class ActivityServiceImpl extends AbstractSapService implements ActivityS
 	@Autowired
 	private SQLServerConnection sqlcon;
 
-	private UsuarioRepository usuarioRepository;
+	private ClienteRepository clienteRepository;
 
 	@Override
 	public List<RegistroPreviewEmpleadoMensualDTO> obtenerActividadesValoradasSinAgrupar(String fechaDesde,
@@ -58,7 +58,7 @@ public class ActivityServiceImpl extends AbstractSapService implements ActivityS
 	private List<RegistroPreviewEmpleadoMensualDTO> obtenerActividadesValoradas(String fechaDesde, String fechaHasta, String exclusiones, 
 			List<Long> idsUsuariosSap, boolean agrupadas) {
 
-		List<Usuario> usuarios = usuarioRepository.findAll();
+		List<Cliente> usuarios = clienteRepository.findAll();
 
 		StringBuilder sql = new StringBuilder();
 			sql.append(" SELECT ");
@@ -195,15 +195,6 @@ public class ActivityServiceImpl extends AbstractSapService implements ActivityS
 
 				preview.setSalario(rs.getBigDecimal("salario").toString());
 				preview.setUnidadSalario(rs.getString("unidadSalario"));
-
-				Optional<Usuario> usuario = usuarios.stream()
-						.filter(x -> x.getUsuariosap().equals(preview.getUsuarioSap().toString())).findFirst();
-				if (usuario.isPresent()) {
-					preview.setLegajo(usuario.get().getLegajo());
-				} else {
-					// Error
-					preview.setLegajo(-1);
-				}
 
 				lista.add(preview);
 			}
@@ -531,9 +522,9 @@ public class ActivityServiceImpl extends AbstractSapService implements ActivityS
 		return m;
 	}
 
-	@Resource(name = "usuarioRepository")
-	public void setUsuarioRepository(UsuarioRepository usuarioRepository) {
-		this.usuarioRepository = usuarioRepository;
+	@Resource(name = "clienteRepository")
+	public void setClienteRepository(ClienteRepository clienteRepository) {
+		this.clienteRepository = clienteRepository;
 	}
 
 	@Override

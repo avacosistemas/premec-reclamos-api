@@ -78,6 +78,7 @@
                 <beans:prop key="javax.persistence.jdbc.driver">#{dataSourceMap['DB_DRIVERCLASSNAME']}</beans:prop>
                 <beans:prop key="hibernate.dialect">#{dataSourceMap['DB_DIALECT']}</beans:prop>
                 <beans:prop key="hibernate.show_sql">true</beans:prop>
+                <beans:prop key="hibernate.hbm2ddl.auto">validate</beans:prop>
             </beans:props>
         </beans:property>
     </beans:bean>

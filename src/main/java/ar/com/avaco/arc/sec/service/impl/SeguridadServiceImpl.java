@@ -10,7 +10,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.domain.Acceso;
-import ar.com.avaco.arc.sec.domain.Usuario;
+import ar.com.avaco.arc.sec.domain.Cliente;
 import ar.com.avaco.arc.sec.service.SeguridadService;
 
 /**
@@ -23,7 +23,7 @@ public class SeguridadServiceImpl implements SeguridadService {
 	/** */
 	private static final long serialVersionUID = -8229748635639912282L;
 
-	public List<Acceso> getAccesosConPermiso(Usuario usuario, String permiso) {
+	public List<Acceso> getAccesosConPermiso(Cliente usuario, String permiso) {
 		List<Acceso> accesosList = new ArrayList<Acceso>();
 		
 		for (Acceso ac : usuario.getAccesos()) {
@@ -34,7 +34,7 @@ public class SeguridadServiceImpl implements SeguridadService {
 		return accesosList;
 	}
 
-	public boolean isSuperRol(Usuario usuario, String permiso, List<Acceso> accesos) {
+	public boolean isSuperRol(Cliente usuario, String permiso, List<Acceso> accesos) {
 		boolean isSuperRol = false;
 		Iterator<Acceso> iter = accesos.iterator();
 		while (iter.hasNext() && !isSuperRol) {
@@ -44,7 +44,7 @@ public class SeguridadServiceImpl implements SeguridadService {
 		return isSuperRol;
 	}
 
-	public boolean hasPermiso(Usuario usuario,String permiso){
+	public boolean hasPermiso(Cliente usuario,String permiso){
 		boolean hasPermiso = false;
 		if(permiso != null && !permiso.trim().equals("")){
 			for(GrantedAuthority authoritie : usuario.getAuthorities()){
@@ -58,12 +58,12 @@ public class SeguridadServiceImpl implements SeguridadService {
 	}
 
 	@Override
-	public boolean hasRol(Usuario usuario, String permiso, String rol) {
+	public boolean hasRol(Cliente usuario, String permiso, String rol) {
 		return usuario.hasRol(permiso, rol);
 	}
 
 	@Override
-	public boolean hasRolYPermisos(Usuario usuario,List<String> permisos, String rol) {
+	public boolean hasRolYPermisos(Cliente usuario,List<String> permisos, String rol) {
 		boolean hasRolYPermisos = true;
 		Iterator<String> it = permisos.iterator();
 		while(hasRolYPermisos && it.hasNext()){

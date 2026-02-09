@@ -14,10 +14,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import ar.com.avaco.arc.sec.domain.Usuario;
+import ar.com.avaco.arc.sec.domain.Cliente;
 import ar.com.avaco.arc.sec.exception.NuclearJSecurityException;
 import ar.com.avaco.arc.sec.service.AuthenticationService;
-import ar.com.avaco.arc.sec.service.UsuarioService;
+import ar.com.avaco.arc.sec.service.ClienteService;
 
 /**
  * The Authentication Service Implements authentication with authentication
@@ -51,11 +51,8 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 	private AuthenticationManager authenticationManager = null;
 
 	
-	/**
-	 * The usuarioService
-	 */
 	@Autowired
-	private UsuarioService usuarioService = null;
+	private ClienteService clienteService = null;
 
 	@Override
 	public void authenticate(String user, String password) {
@@ -70,10 +67,10 @@ public class AuthenticationServiceImpl implements AuthenticationService {
 		} catch (CredentialsExpiredException e) {
 			throw new NuclearJSecurityException("password.expired", e);
 		} catch (BadCredentialsException e) {
-			if (usuarioService.isUserExists(user) ) {
-				Usuario usuario = (Usuario) usuarioService.loadUserByUsername(user);
-				usuario.incrementarIntentoFallido();
-				usuarioService.update(usuario);
+			if (clienteService.isUserExists(user) ) {
+				Cliente cliente = (Cliente) clienteService.loadUserByUsername(user);
+				cliente.incrementarIntentoFallido();
+				clienteService.update(cliente);
 			}
 			throw new NuclearJSecurityException("user.invalid", e);
 		} catch (AuthenticationException e) {

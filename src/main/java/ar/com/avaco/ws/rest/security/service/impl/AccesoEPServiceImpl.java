@@ -12,10 +12,10 @@ import javax.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import ar.com.avaco.arc.sec.domain.Acceso;
+import ar.com.avaco.arc.sec.domain.Cliente;
 import ar.com.avaco.arc.sec.domain.Perfil;
-import ar.com.avaco.arc.sec.domain.Usuario;
+import ar.com.avaco.arc.sec.service.ClienteService;
 import ar.com.avaco.arc.sec.service.PerfilService;
-import ar.com.avaco.arc.sec.service.UsuarioService;
 import ar.com.avaco.service.cliente.AccesoService;
 import ar.com.avaco.ws.rest.security.dto.AccesoDTO;
 import ar.com.avaco.ws.rest.security.service.AccesoEPService;
@@ -32,22 +32,18 @@ public class AccesoEPServiceImpl extends CRUDEPBaseService<Long, AccesoDTO, Acce
 
 	private PerfilService perfilService;
 
-	private UsuarioService usuarioService;
+	private ClienteService clienteService;
 
 	@Override
 	protected Acceso convertToEntity(AccesoDTO dto) {
-		Acceso a = new Acceso();
-		a.setId(dto.getId());
-		a.setPerfil(perfilService.get(dto.getIdGrupo()));
-		a.setUsuario(usuarioService.get(dto.getIdUsuario()));
-		return a;
+		throw new RuntimeException("Not implemented");
 	}
 
 	@Override
 	protected AccesoDTO convertToDto(Acceso entity) {
 		AccesoDTO dto = new AccesoDTO();
 		dto.setId(entity.getPerfil().getId());
-		dto.setIdUsuario(entity.getUsuario().getId());
+		dto.setIdUsuario(entity.getCliente().getId());
 		dto.setPerfilNombre(entity.getPerfil().getNombre());
 		return dto;
 	}
@@ -63,9 +59,9 @@ public class AccesoEPServiceImpl extends CRUDEPBaseService<Long, AccesoDTO, Acce
 		this.perfilService = perfilService;
 	}
 
-	@Resource(name = "usuarioService")
-	public void setUsuarioService(UsuarioService usuarioService) {
-		this.usuarioService = usuarioService;
+	@Resource(name = "clienteService")
+	public void setClienteService(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
 
 	@Override
@@ -78,10 +74,10 @@ public class AccesoEPServiceImpl extends CRUDEPBaseService<Long, AccesoDTO, Acce
 
 	@Override
 	public void delete(Long id, Long idUsuario) {
-		Usuario usuario = this.usuarioService.get(idUsuario);
+		Cliente usuario = this.clienteService.get(idUsuario);
 		Perfil perfil = this.perfilService.get(id);
 		usuario.getAccesos().remove(perfil);
-		this.usuarioService.update(usuario);
+		this.clienteService.update(usuario);
 	}
 
 }

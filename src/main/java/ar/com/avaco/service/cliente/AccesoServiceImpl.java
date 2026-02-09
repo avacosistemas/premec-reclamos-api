@@ -22,7 +22,7 @@ public class AccesoServiceImpl extends NJBaseService<Long, Acceso, AccesoReposit
 
 	@Override
 	public List<Acceso> list(Long usuarioId) {
-		return this.getRepository().findByUsuarioId(usuarioId);
+		return this.getRepository().findByClienteId(usuarioId);
 	}
 
 }

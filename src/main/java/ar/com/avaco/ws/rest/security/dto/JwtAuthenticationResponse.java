@@ -41,7 +41,6 @@ public class JwtAuthenticationResponse implements Serializable {
 		this.token = token;
 
 		this.name = usuario.getName();
-		this.lastname = usuario.getLastname();
 		this.email = usuario.getEmail();
 		this.role = "Administrators";
 		if (!passwordExpired) {

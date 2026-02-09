@@ -7,6 +7,6 @@ import ar.com.avaco.arc.sec.domain.Acceso;
 
 public interface AccesoRepository extends NJRepository<Long, Acceso>, AccesoRepositoryCustom {
 
-	List<Acceso> findByUsuarioId(Long usuarioId);
+	List<Acceso> findByClienteId(Long usuarioId);
 
 }

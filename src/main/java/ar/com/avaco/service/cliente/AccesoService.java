@@ -8,7 +8,7 @@ import ar.com.avaco.arc.sec.domain.Acceso;
 
 public interface AccesoService extends NJService<Long, Acceso> {
 
-	List<Acceso> list(Long usuarioId);
+	List<Acceso> list(Long clienteId);
 
 
 }

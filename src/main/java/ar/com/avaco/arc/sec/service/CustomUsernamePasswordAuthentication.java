@@ -9,7 +9,7 @@ import org.springframework.security.authentication.UsernamePasswordAuthenticatio
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 
-import ar.com.avaco.arc.sec.domain.Usuario;
+import ar.com.avaco.arc.sec.domain.Cliente;
 
 /**
  * @author avaco
@@ -36,7 +36,7 @@ public class CustomUsernamePasswordAuthentication extends
 	@SuppressWarnings("unchecked")
 	@Override
 	public Collection<GrantedAuthority> getAuthorities() {
-		return (Collection<GrantedAuthority>) ((Usuario)SecurityContextHolder.getContext()
+		return (Collection<GrantedAuthority>) ((Cliente)SecurityContextHolder.getContext()
 				.getAuthentication().getPrincipal()).getAuthorities();
 	}
 }

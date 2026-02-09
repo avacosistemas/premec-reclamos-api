@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import ar.com.avaco.arc.sec.service.UsuarioService;
+import ar.com.avaco.arc.sec.service.ClienteService;
 import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 import ar.com.avaco.ws.rest.security.dto.PassworResetDTO;
@@ -24,13 +24,13 @@ import ar.com.avaco.ws.service.FunctionBusiness;
 @RestController
 public class PasswordRestController {
 
-    private UsuarioService usuarioService;
+    private ClienteService clienteService;
 	
 	private UserService userEPservice;
 
 	@RequestMapping(value = "/password/reset", method = RequestMethod.POST)
 	public ResponseEntity<JSONResponse> reset(@RequestBody PassworResetDTO dto) throws BusinessException {
-		usuarioService.sendMissingPassword(dto.getEmail());
+		clienteService.sendMissingPassword(dto.getEmail());
 		JSONResponse jsonResponse = new JSONResponse();
 		jsonResponse.setData(null);
 		jsonResponse.setStatus(JSONResponse.OK);
@@ -39,7 +39,7 @@ public class PasswordRestController {
 	
 	@RequestMapping(value = "/password/reset/{id}", method = RequestMethod.PUT)
 	public ResponseEntity<JSONResponse> resetById(@PathVariable("id") Long id) throws BusinessException {
-		usuarioService.sendMissingPasswordById(id);
+		clienteService.sendMissingPasswordById(id);
 		JSONResponse jsonResponse = new JSONResponse();
 		jsonResponse.setData(null);
 		jsonResponse.setStatus(JSONResponse.OK);
@@ -66,9 +66,9 @@ public class PasswordRestController {
 		return response;
 	}
 	
-	@Resource(name = "usuarioService")
-	public void setUsuarioService(UsuarioService usuarioService) {
-		this.usuarioService = usuarioService;
+	@Resource(name = "clienteService")
+	public void setClienteService(ClienteService clienteService) {
+		this.clienteService = clienteService;
 	}
 	
     @Resource(name = "userService")
