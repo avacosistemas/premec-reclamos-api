@@ -32,7 +32,6 @@ import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPCellEvent;
 import com.itextpdf.text.pdf.PdfPTable;
 
-import ar.com.avaco.commons.domain.TipoActividad;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.dto.actividad.ActividadReporteDTO;
 import ar.com.avaco.ws.dto.formulario.ItemCheckDTO;
@@ -108,7 +107,7 @@ public class InformeBuilderReparaciones extends InformeBuilder {
 		}
 		JSONResponse response = new JSONResponse();
 		response.setData(Files.readAllBytes(Paths.get(super.path)));
-		response.setStatus(JSONResponse.OK);
+		response.setStatus(HttpStatus.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 

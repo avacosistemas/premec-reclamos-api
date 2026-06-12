@@ -4,35 +4,46 @@ import java.util.List;
 
 import ar.com.avaco.ws.rest.dto.DTOEntity;
 
-public class PageDTO<DTO extends DTOEntity<?>> {
+public class PageDTO<DTO>  {
 
-	public PageDTO() {
+	private List<DTO> list;
+
+	private Integer totalReg;
+
+	private Integer pageSize;
+
+	private Integer page;
+
+	public List<DTO> getList() {
+		return list;
 	}
 
-	public PageDTO(List<DTO> page, long totalReg) {
-		super();
-		this.page = page;
-		this.totalReg = totalReg;
+	public void setList(List<DTO> list) {
+		this.list = list;
 	}
 
-	private List<DTO> page;
-
-	private long totalReg;
-
-	public List<DTO> getPage() {
-		return page;
-	}
-
-	public void setPage(List<DTO> page) {
-		this.page = page;
-	}
-
-	public long getTotalReg() {
+	public Integer getTotalReg() {
 		return totalReg;
 	}
 
-	public void setTotalReg(long totalReg) {
+	public void setTotalReg(Integer totalReg) {
 		this.totalReg = totalReg;
+	}
+
+	public Integer getPageSize() {
+		return pageSize;
+	}
+
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
+	}
+
+	public Integer getPage() {
+		return page;
+	}
+
+	public void setPage(Integer page) {
+		this.page = page;
 	}
 
 }

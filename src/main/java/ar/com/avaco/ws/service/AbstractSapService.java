@@ -21,9 +21,6 @@ public abstract class AbstractSapService {
 	@Value("${dbSAP}")
 	protected String dbSAP;
 
-	@Value("${monitor.maxpagesize}")
-	protected String maxpagesize;
-
 	@Value("${email.from}")
 	protected String from;
 

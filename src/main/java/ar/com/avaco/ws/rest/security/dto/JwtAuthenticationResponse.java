@@ -33,6 +33,16 @@ public class JwtAuthenticationResponse implements Serializable {
 
 	private Boolean passwordExpired;
 
+	private String fechaVencimiento;
+
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
+	}
+
 	public JwtAuthenticationResponse(String token) {
 		this.token = token;
 	}
@@ -56,6 +66,7 @@ public class JwtAuthenticationResponse implements Serializable {
 		this.username = usuario.getUsername();
 
 		this.passwordExpired = passwordExpired;
+		this.fechaVencimiento = usuario.getFechaVencimiento();
 	}
 
 	public String getPermisos() {

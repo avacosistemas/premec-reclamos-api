@@ -8,7 +8,6 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.log4j.Logger;
-import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -177,7 +176,7 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		msg.append(".<br>");
 		msg.append("La contraseña asignada es: <strong>");
 		msg.append(tmpass);
-		msg.append(".<br>");
+		msg.append("<br>");
 		mailSenderSMTPService.sendMail(from, user.getEmail(), cc, subject.toString(), msg.toString(), null);
 	}
 
@@ -190,7 +189,7 @@ public class ClienteServiceImpl extends NJBaseService<Long, Cliente, ClienteRepo
 		msg.append(".<br>");
 		msg.append("La contraseña asignada es: <strong>");
 		msg.append(tmppas);
-		msg.append(".<br>");
+		msg.append("<br>");
 		mailSenderSMTPService.sendMail(from, user.getEmail(), cc, subject.toString(), msg.toString(), null);
 	}
 

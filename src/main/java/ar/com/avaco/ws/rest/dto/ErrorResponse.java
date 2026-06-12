@@ -2,6 +2,8 @@ package ar.com.avaco.ws.rest.dto;
 
 import java.util.Map;
 
+import org.springframework.http.HttpStatus;
+
 public class ErrorResponse extends JSONResponse {
 
 	private String message;
@@ -12,14 +14,16 @@ public class ErrorResponse extends JSONResponse {
 		super();
 	}
 
-	public ErrorResponse(String status, Object data, String message, Map<String, String> errors) {
-		super(status, data);
+	public ErrorResponse(HttpStatus status, Object data, String message, Map<String, String> errors) {
+		super.setStatus(status);
+		super.setData(data);
 		this.message = message;
 		this.errors = errors;
 	}
 
-	public ErrorResponse(String status, Object data, String message, String error) {
-		super(status, data);
+	public ErrorResponse(HttpStatus status, Object data, String message, String error) {
+		super.setStatus(status);
+		super.setData(data);
 		this.message = message;
 		this.error = error;
 	}

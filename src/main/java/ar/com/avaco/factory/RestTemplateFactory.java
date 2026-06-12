@@ -11,6 +11,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManagerFactory;
 
 import org.apache.http.impl.client.HttpClients;
+import org.apache.log4j.Logger;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
@@ -30,6 +31,8 @@ public class RestTemplateFactory {
 
 	private RestTemplatePremec restTemplate;
 
+	private Logger logger = Logger.getLogger(RestTemplateFactory.class);
+	
 	public RestTemplateFactory(String urlSAP, String user, String pass, String db, RestTemplatePremec restTemplate) {
 		this.urlSAP = urlSAP;
 		this.user = user;
@@ -40,14 +43,23 @@ public class RestTemplateFactory {
 
 	public RestTemplatePremec get() {
 
+		logger.debug("Iniciando GET");
 		if (this.restTemplate == null || !this.restTemplate.isSessionActive()) {
+			
+			if (this.restTemplate == null) 
+				logger.debug("Rest Template is null"); 
+			else 
+				logger.debug("Rest Template session expired");    
+			
 			this.restTemplate = null;
 			int count = 1;
 			while (count <= 3 && this.restTemplate == null) {
 				try {
 					this.restTemplate = getLoggedRestTemplate();
+					logger.debug("Rest Template inicializado");
 				} catch (Exception e) {
 					count++;
+					e.printStackTrace();
 				}
 			}
 		}
@@ -85,8 +97,8 @@ public class RestTemplateFactory {
 		HttpComponentsClientHttpRequestFactory httpRequestFactory = new HttpComponentsClientHttpRequestFactory();
 		httpRequestFactory.setHttpClient(HttpClients.custom().setSSLContext(sslContext).build());
 
-		httpRequestFactory.setConnectionRequestTimeout(5000);
-		httpRequestFactory.setReadTimeout(5000);
+		httpRequestFactory.setConnectionRequestTimeout(60000);
+		httpRequestFactory.setReadTimeout(60000);
 		
 		// Crear un objeto RestTemplate que use la fábrica de solicitudes HTTP
 		RestTemplatePremec restTemplate = new RestTemplatePremec(httpRequestFactory);
@@ -109,7 +121,8 @@ public class RestTemplateFactory {
 		try {
 			ResponseEntity<ResponseLoginSAPDTO> response = restTemplate.exchange(urlLogin, HttpMethod.POST, httpEntity,
 					ResponseLoginSAPDTO.class);
-			headers.add("Cookie", "B1SESSION=" + response.getBody().getSessionId() + "; ROUTEID=.node7");
+			headers.add("Cookie", "B1SESSION=" + response.getBody().getSessionId());
+//			 + "; ROUTEID=.node7"
 			headers.setCacheControl("no-cache");
 			headers.add("Prefer", "odata.maxpagesize=0");
 

@@ -12,6 +12,12 @@ public class ServiceCallActivitiesResponseSapDTO {
 	@JsonProperty("U_U_HsMaq")
 	private String horasMaquina;
 
+	@JsonProperty("LineNum")
+	private Integer line;
+	
+	@JsonProperty("U_valoracionreclamo")
+	private Integer valoracion;
+	
 	public Long getActivityCode() {
 		return activityCode;
 	}
@@ -28,4 +34,22 @@ public class ServiceCallActivitiesResponseSapDTO {
 		this.horasMaquina = horasMaquina;
 	}
 
+	public Integer getLine() {
+		return line;
+	}
+
+	public void setLine(Integer line) {
+		this.line = line;
+	}
+
+	public Integer getValoracion() {
+		return valoracion;
+	}
+
+	public void setValoracion(Integer valoracion) {
+		this.valoracion = valoracion;
+	}
+
+	
+	
 }

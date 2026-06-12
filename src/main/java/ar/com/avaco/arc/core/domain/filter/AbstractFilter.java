@@ -5,9 +5,9 @@ import java.util.List;
 
 public abstract class AbstractFilter {
 
-	private Integer rows;
+	private Integer pageSize;
 
-	private Integer first;
+	private Integer page;
 
 	private Boolean asc;
 
@@ -15,10 +15,10 @@ public abstract class AbstractFilter {
 	
 	private Boolean distinctRootEntity;
 
-	public AbstractFilter(Integer rows, Integer first, Boolean asc, String idx) {
+	public AbstractFilter(Integer pageSize, Integer page, Boolean asc, String idx) {
 		super();
-		this.rows = rows;
-		this.first = first;
+		this.pageSize = pageSize;
+		this.page = page;
 		this.asc = asc;
 		this.idx = idx;
 	}
@@ -34,20 +34,20 @@ public abstract class AbstractFilter {
 		return new ArrayList<List<FilterData>>();
 	}
 	
-	public Integer getRows() {
-		return rows;
+	public Integer getPageSize() {
+		return pageSize;
 	}
 
-	public void setRows(Integer rows) {
-		this.rows = rows;
+	public void setPageSize(Integer pageSize) {
+		this.pageSize = pageSize;
 	}
 
-	public Integer getFirst() {
-		return first;
+	public Integer getPage() {
+		return page;
 	}
 
-	public void setFirst(Integer first) {
-		this.first = first;
+	public void setPage(Integer page) {
+		this.page = page;
 	}
 
 	public Boolean isAsc() {

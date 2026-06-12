@@ -4,6 +4,7 @@ import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.OffsetDateTime;
@@ -31,6 +32,14 @@ public class DateUtils {
 		return ld.format(formatter);
 	}
 
+	public static String toString(Instant i, String pattern) {
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern)
+		        .withZone(ZoneId.of("America/Argentina/Buenos_Aires"));
+
+		String fecha = formatter.format(i);
+		return fecha;
+	}
+
 	public static Date toDate(String dia, String pattern) {
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 		dateFormat.applyPattern(pattern);
@@ -51,6 +60,7 @@ public class DateUtils {
 	}
 
 	public static String toString(Date fecha, String pattern) {
+		if (fecha == null) return "";
 		SimpleDateFormat dateFormat = (SimpleDateFormat) DateFormat.getInstance();
 		dateFormat.applyPattern(pattern);
 		return dateFormat.format(fecha);

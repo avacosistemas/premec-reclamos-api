@@ -25,6 +25,8 @@ public class User extends Entity<Long> implements Serializable {
 	private String email;
 	private boolean enabled;
 
+	private String fechaVencimiento;
+
 	public User() {
 
 	}
@@ -85,6 +87,14 @@ public class User extends Entity<Long> implements Serializable {
 
 	public void setEnabled(boolean enabled) {
 		this.enabled = enabled;
+	}
+
+	public String getFechaVencimiento() {
+		return fechaVencimiento;
+	}
+
+	public void setFechaVencimiento(String fechaVencimiento) {
+		this.fechaVencimiento = fechaVencimiento;
 	}
 
 }

@@ -1,10 +1,18 @@
 package ar.com.avaco.ws.rest.security.controller;
 
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.Objects;
+import java.util.TimeZone;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,8 +27,14 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.arc.sec.domain.Cliente;
+import ar.com.avaco.factory.SapBusinessException;
+import ar.com.avaco.premec.sap.dto.BusinessPartnerResponseDTO;
+import ar.com.avaco.premec.sap.service.BusinessPartnerService;
+import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.rest.security.dto.JwtAuthenticationRequest;
 import ar.com.avaco.ws.rest.security.dto.JwtAuthenticationResponse;
+import ar.com.avaco.ws.rest.security.dto.Permission;
+import ar.com.avaco.ws.rest.security.dto.Profile;
 import ar.com.avaco.ws.rest.security.dto.User;
 import ar.com.avaco.ws.rest.security.dto.UserAuthorised;
 import ar.com.avaco.ws.rest.security.exception.AuthenticationException;
@@ -45,6 +59,12 @@ public class AuthenticationRestController {
 
 	@Resource(name = "userService")
 	private UserService userService;
+
+	@Autowired
+	private BusinessPartnerService bpService;
+
+	@Value("${vigencia.warning.dias}")
+	private String vigenciaWarningDias;
 
 	@RequestMapping(value = "/auth", method = RequestMethod.POST)
 	public ResponseEntity<JwtAuthenticationResponse> createAuthenticationToken(
@@ -71,6 +91,37 @@ public class AuthenticationRestController {
 
 		User usuario = userService.getByUsername(userDetails.getUsername());
 
+		try {
+			// Busco el business partner
+			BusinessPartnerResponseDTO byCUIT = bpService.getByCUIT(usuario.getUsername());
+
+			// Si es valido, le agrego el permiso para crear reclamos generales
+			if (byCUIT.getValid().equals("tYES")) {
+				Permission permiso = new Permission();
+				permiso.setCode("AGREGAR_RECLAMO");
+				Profile perfil = new Profile();
+				perfil.getPermissions().add(permiso);
+				usuario.getProfiles().add(perfil);
+
+				// Setear fecha de vencimiento obtenida de SAP
+				String validTo = byCUIT.getValidTo();
+
+				if (StringUtils.isNotBlank(validTo)) {
+					
+					LocalDate fecha = LocalDate.parse(validTo.substring(0, 10));
+
+					LocalDate plusDays = fecha.plusDays(Integer.parseInt(vigenciaWarningDias) * -1);
+
+					if (LocalDate.now().isAfter(plusDays)) {
+						String resultado = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+						usuario.setFechaVencimiento(resultado);
+					}
+				}
+			}
+		} catch (SapBusinessException e) {
+
+		}
+
 		// Return the token and user datas
 		return ResponseEntity.ok(new JwtAuthenticationResponse(token, usuario, false));
 	}
@@ -83,6 +134,39 @@ public class AuthenticationRestController {
 		Cliente user = (Cliente) userDetailsService.loadUserByUsername(username);
 
 		User usuario = userService.getByUsername(username);
+
+		try {
+			// Busco el business partner
+			BusinessPartnerResponseDTO byCUIT = bpService.getByCUIT(usuario.getUsername());
+
+			// Si es valido, le agrego el permiso para crear reclamos generales
+			// FIXME PONER NOT CUANDO TERMINEN LAS PRUEBAS
+			if (byCUIT.getValid().equals("tYES")) {
+				Permission permiso = new Permission();
+				permiso.setCode("AGREGAR_RECLAMO");
+				Profile perfil = new Profile();
+				perfil.getPermissions().add(permiso);
+				usuario.getProfiles().add(perfil);
+
+				// Setear fecha de vencimiento obtenida de SAP
+				String validTo = byCUIT.getValidTo();
+
+				if (StringUtils.isNotBlank(validTo)) {
+					
+					LocalDate fecha = LocalDate.parse(validTo.substring(0, 10));
+
+					LocalDate plusDays = fecha.plusDays(Integer.parseInt(vigenciaWarningDias) * -1);
+
+					if (LocalDate.now().isAfter(plusDays)) {
+						String resultado = fecha.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"));
+						usuario.setFechaVencimiento(resultado);
+					}
+				}
+
+			}
+		} catch (SapBusinessException e) {
+
+		}
 
 		if (jwtTokenUtil.canTokenBeRefreshed(token, user.getFechaAltaPassword())) {
 			String refreshedToken = jwtTokenUtil.refreshToken(token);
@@ -122,6 +206,5 @@ public class AuthenticationRestController {
 		Objects.requireNonNull(password);
 		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(username, password));
 	}
-
 
 }

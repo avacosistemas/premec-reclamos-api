@@ -182,6 +182,13 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorResponse>(getResponse(ex, CHANGE_PASSWORD_REQUIRED), HttpStatus.CONFLICT);
 	}
 	
+	private ErrorResponse getResponse(RuntimeException ex, String status) {
+		ex.printStackTrace();
+		ErrorResponse response = getErrorResponse(ex);
+		response.setStatus(status);
+		return response;
+	}
+
 	@ExceptionHandler(BadCredentialsException.class)
 	public ResponseEntity<ErrorResponse> subhandleException(final BadCredentialsException ex,WebRequest wr) {
 		ex.printStackTrace();
@@ -196,6 +203,13 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorResponse>(getResponse(ex, HttpStatus.CONFLICT), HttpStatus.CONFLICT);
 	}
 	
+	private ErrorResponse getResponse(Exception ex, HttpStatus status) {
+		ex.printStackTrace();
+		ErrorResponse response = getErrorResponse(ex);
+		response.setStatus(status);
+		return response;
+	}
+
 	// Validations Errors
 	@ExceptionHandler(ErrorValidationException.class)
 	public ResponseEntity<ErrorResponse> subhandleException(final ErrorValidationException ex,WebRequest wr) {
@@ -205,13 +219,6 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
         return new ResponseEntity<ErrorResponse>(response, HttpStatus.CONFLICT);
 	}
 	
-	private ErrorResponse getResponse(final Exception ex,HttpStatus status) {
-		ex.printStackTrace();
-		ErrorResponse response = getErrorResponse(ex);
-		response.setStatus(status.name());
-		return response;
-	}
-
 	private ErrorResponse getErrorResponse(final Exception ex) {
 		ex.printStackTrace();
 		ErrorResponse response = new ErrorResponse();
@@ -225,11 +232,4 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 		return response;
 	}
 	
-	private ErrorResponse getResponse(final Exception ex,String status) {
-		ex.printStackTrace();
-		ErrorResponse response = getErrorResponse(ex);
-		response.setStatus(status);
-		return response;
-	}
-
 }

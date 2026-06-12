@@ -54,7 +54,7 @@ public abstract class AbsctractRestController<RDTO extends Entity<ID>, ID extend
 			}
     		response.setData(dtos);
     	}
-		response.setStatus(OK);	
+		response.setStatus(HttpStatus.OK);	
         return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
     }
     
@@ -67,7 +67,7 @@ public abstract class AbsctractRestController<RDTO extends Entity<ID>, ID extend
     	JSONResponse response = null;
     	if(entity == null) {
     		ErrorResponse eresp = new ErrorResponse();
-    		eresp.setStatus(ERROR);
+    		eresp.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
     		eresp.setError(MessageFormat.format(ENTITY_WITH_ID_0_NOT_FOUND,id));    		
     		eresp.setData(entity);
     		httpStatus = HttpStatus.NOT_FOUND;
@@ -122,7 +122,7 @@ public abstract class AbsctractRestController<RDTO extends Entity<ID>, ID extend
 	protected <T> JSONResponse  getResponseOK(T data) {
 		JSONResponse response = new JSONResponse();
         response.setData(data);
-   		response.setStatus(OK);
+   		response.setStatus(HttpStatus.OK);
 		return response;
 	}
     

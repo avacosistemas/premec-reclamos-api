@@ -23,7 +23,7 @@ public abstract class AbstractRestBaseController {
 	protected <T> JSONResponse getResponseOK(T data) {
 		JSONResponse response = new JSONResponse();
 		response.setData(data);
-		response.setStatus(OK);
+		response.setStatus(HttpStatus.OK);
 		return response;
 	}
 

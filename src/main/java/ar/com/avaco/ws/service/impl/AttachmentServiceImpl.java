@@ -15,7 +15,7 @@ import ar.com.avaco.ws.dto.attachment.ResponseAttachmentGetPost;
 import ar.com.avaco.ws.service.AbstractSapService;
 
 @Service("attachmentService")
-public class AttachmentServiceImpl extends AbstractSapService implements AttachmentService {
+public class AttachmentServiceImpl extends AbstractSapService implements AttachmentSapService {
 
 	@Override
 	public ResponseAttachmentGetPost getAttachment(Long attachmentEntry) {

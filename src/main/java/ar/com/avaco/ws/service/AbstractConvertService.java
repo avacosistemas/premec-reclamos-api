@@ -88,7 +88,7 @@ public abstract class AbstractConvertService<DTO extends Entity<ID>, ID extends 
 		return convertToDtos(this.service.listFilter(abstractFilter));
 	}
 
-	public List<DTO> listPattern(String field, String pattern) {
+	public List<DTO> listPattern(String field, Object pattern) {
 		if(this.service == null) {
 			return convertToDtos(this.repository.listPattern(field, pattern));
 		}

@@ -9,11 +9,33 @@ public class BusinessPartnerResponseDTO {
 	@JsonProperty("CardName")
 	private String cardName;
 
-	@JsonProperty("EmailAddress")
+	@JsonProperty("U_correoreclamos")
 	private String emailAddress;
 
 	@JsonProperty("CardCode")
 	private String cardCode;
+
+	@JsonProperty("Valid")
+	private String valid;
+
+	@JsonProperty("ValidTo")
+	private String validTo;
+
+	public String getValidTo() {
+		return validTo;
+	}
+
+	public void setValidTo(String validTo) {
+		this.validTo = validTo;
+	}
+
+	public String getValid() {
+		return valid;
+	}
+
+	public void setValid(String valid) {
+		this.valid = valid;
+	}
 
 	public String getCardCode() {
 		return cardCode;

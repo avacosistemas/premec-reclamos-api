@@ -33,7 +33,7 @@ public class PasswordRestController {
 		clienteService.sendMissingPassword(dto.getEmail());
 		JSONResponse jsonResponse = new JSONResponse();
 		jsonResponse.setData(null);
-		jsonResponse.setStatus(JSONResponse.OK);
+		jsonResponse.setStatus(HttpStatus.OK);
 		return new ResponseEntity<JSONResponse>(jsonResponse, HttpStatus.OK);
 	}
 	
@@ -42,7 +42,7 @@ public class PasswordRestController {
 		clienteService.sendMissingPasswordById(id);
 		JSONResponse jsonResponse = new JSONResponse();
 		jsonResponse.setData(null);
-		jsonResponse.setStatus(JSONResponse.OK);
+		jsonResponse.setStatus(HttpStatus.OK);
 		return new ResponseEntity<JSONResponse>(jsonResponse, HttpStatus.OK);
 	}
 
@@ -62,7 +62,7 @@ public class PasswordRestController {
 	protected <T> JSONResponse  getResponseOK(T data) {
 		JSONResponse response = new JSONResponse();
         response.setData(data);
-   		response.setStatus(JSONResponse.OK);
+   		response.setStatus(HttpStatus.OK);
 		return response;
 	}
 	

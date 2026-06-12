@@ -70,16 +70,20 @@ public class NJBaseRepository<ID extends Serializable, E extends ar.com.avaco.ar
 	
 	@SuppressWarnings("unchecked")
 	@Override
-	public List<E> listPattern(String field, String pattern) {
+	public List<E> listPattern(String field, Object pattern) {
 		Criteria criteria = getCurrentSession().createCriteria(getHandledClass());
-		criteria.add(Restrictions.like(field, pattern, MatchMode.ANYWHERE).ignoreCase());
+		if (pattern instanceof String) {
+			criteria.add(Restrictions.like(field, pattern.toString(), MatchMode.ANYWHERE).ignoreCase());
+		} else {
+			criteria.add(Restrictions.eq(field, pattern));
+		}
 		return criteria.list();
 	}
 	
 	protected void applyPagination(Criteria criteria, AbstractFilter abstractFilter) {
-		if (abstractFilter.getFirst() != null && abstractFilter.getRows() != null) {
-			criteria.setFirstResult(abstractFilter.getFirst());
-			criteria.setMaxResults(abstractFilter.getRows());
+		if (abstractFilter.getPage() != null && abstractFilter.getPageSize() != null) {
+			criteria.setFirstResult(abstractFilter.getPage());
+			criteria.setMaxResults(abstractFilter.getPageSize());
 		}
 	}
 	

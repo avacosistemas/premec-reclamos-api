@@ -27,7 +27,7 @@ public interface ConvertService<DTO extends Entity<ID>, ID extends Serializable,
 	void remove(ID id);
 	int listCount(AbstractFilter abstractFilter);
 	List<DTO> listFilter(AbstractFilter abstractFilter);
-	List<DTO> listPattern(String field, String pattern);
+	List<DTO> listPattern(String field, Object pattern);
 	DTO convertToDto(E entity);
 	E convertToEntity(E entity, DTO dto);
 	
