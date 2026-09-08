@@ -99,7 +99,7 @@ public class InformeBuilderPiezasRepararMantenimientoMaquinaria extends InformeB
 		}
 		JSONResponse response = new JSONResponse();
 		response.setData(Files.readAllBytes(Paths.get(super.path)));
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 

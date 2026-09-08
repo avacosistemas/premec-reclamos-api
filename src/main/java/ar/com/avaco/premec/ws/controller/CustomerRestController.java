@@ -11,7 +11,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import ar.com.avaco.factory.SapBusinessException;
+import ar.com.avaco.premec.dto.ContractContactDTO;
+import ar.com.avaco.premec.sap.service.BusinessPartnerService;
 import ar.com.avaco.premec.sap.service.CustomerEquipmentCardsSapService;
+import ar.com.avaco.premec.ws.service.ReclamoEPService;
 import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @RestController
@@ -19,6 +22,9 @@ public class CustomerRestController {
 
 	@Autowired
 	private CustomerEquipmentCardsSapService maquinaService;
+	
+	@Autowired
+	private BusinessPartnerService businessPartnerService;
 
 	@RequestMapping(value = "/customer/equipment", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<JSONResponse> getMaquinasCustomer(@RequestParam(required = false, defaultValue = "") String maquina)
@@ -26,7 +32,7 @@ public class CustomerRestController {
 		String cuit = SecurityContextHolder.getContext().getAuthentication().getName();
 		JSONResponse response = new JSONResponse();
 		response.setData(maquinaService.listByCustomer(cuit, maquina));
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
@@ -35,7 +41,17 @@ public class CustomerRestController {
 		String name = SecurityContextHolder.getContext().getAuthentication().getName();
 		JSONResponse response = new JSONResponse();
 		response.setData(maquinaService.valiteByCustomerMachine(name, internalSerialNum));
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
+	}
+
+	@RequestMapping(value = "/customer/equipment/validateEmail", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<JSONResponse> validateEquipmentEmail(@RequestParam String internalSerialNum) throws SapBusinessException {
+		String name = SecurityContextHolder.getContext().getAuthentication().getName();
+		JSONResponse response = new JSONResponse();
+		ContractContactDTO contractContact = this.businessPartnerService.getContractContact(name, internalSerialNum);
+		response.setData(contractContact != null);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 

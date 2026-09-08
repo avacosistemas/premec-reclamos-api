@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.io.FileUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,12 +19,13 @@ import org.springframework.stereotype.Service;
 import com.ibm.icu.util.Calendar;
 
 import ar.com.avaco.arc.core.domain.filter.ReclamoFilterDTO;
+import ar.com.avaco.commons.exception.BusinessException;
 import ar.com.avaco.factory.SapBusinessException;
+import ar.com.avaco.premec.dto.ContractContactDTO;
 import ar.com.avaco.premec.dto.ProblemaMaquinaDTO;
 import ar.com.avaco.premec.dto.ReclamoCreateDTO;
 import ar.com.avaco.premec.dto.ReclamoValorarDTO;
 import ar.com.avaco.premec.dto.TipoProblemaMaquinaDTO;
-import ar.com.avaco.premec.sap.dto.BusinessPartnerResponseDTO;
 import ar.com.avaco.premec.sap.dto.ServiceCallActivityDTO;
 import ar.com.avaco.premec.sap.dto.ServiceCallCreateSapDTO;
 import ar.com.avaco.premec.sap.dto.ServiceCallReclamoListDTO;
@@ -101,9 +103,16 @@ public class ReclamoEPServiceImpl extends AbstractSapService implements ReclamoE
 		
 		Long reclamoId = this.serviceCallservice.create(dto);
 		
-		BusinessPartnerResponseDTO byCUIT = businessPartnerService.getByCUIT(cuit);
+		ContractContactDTO contractContact = this.businessPartnerService.getContractContact(cuit, reclamo.getInternalSerialNum());
+		String email = null;
+		String nombre = cuit;
 		
-		this.serviceCallservice.insertEventoReclamoCreacion(reclamo, reclamoId, dto.getCustomerCode(), byCUIT.getCardName(), byCUIT.getEmailAddress()); 
+		if (contractContact != null && StringUtils.isNotBlank(contractContact.getEmail())) {
+			email = contractContact.getEmail();
+			nombre = contractContact.getCardName();
+		}
+		
+		this.serviceCallservice.insertEventoReclamoCreacion(reclamo, reclamoId, dto.getCustomerCode(), nombre, email); 
 		
 	}
 	

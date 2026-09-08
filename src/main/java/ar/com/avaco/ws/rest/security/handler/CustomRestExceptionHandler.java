@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExcep
 
 import ar.com.avaco.commons.exception.ErrorValidationException;
 import ar.com.avaco.ws.rest.dto.ErrorResponse;
+import ar.com.avaco.ws.rest.dto.JSONResponse;
 
 @ControllerAdvice
 public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
@@ -206,7 +207,7 @@ public class CustomRestExceptionHandler extends ResponseEntityExceptionHandler {
 	private ErrorResponse getResponse(Exception ex, HttpStatus status) {
 		ex.printStackTrace();
 		ErrorResponse response = getErrorResponse(ex);
-		response.setStatus(status);
+		response.setStatus(JSONResponse.ERROR);
 		return response;
 	}
 

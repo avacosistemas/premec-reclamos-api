@@ -3,7 +3,9 @@ package ar.com.avaco.arc.core.domain.filter;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractFilter {
+import ar.com.avaco.ws.service.filter.SortPageDTO;
+
+public abstract class AbstractFilter extends SortPageDTO {
 
 	private Integer pageSize;
 
@@ -29,7 +31,7 @@ public abstract class AbstractFilter {
 	public List<FilterData> getFilterDatas() {
 		return new ArrayList<FilterData>();
 	}
-
+	
 	public List<List<FilterData>> getOrFilterDatas(){
 		return new ArrayList<List<FilterData>>();
 	}

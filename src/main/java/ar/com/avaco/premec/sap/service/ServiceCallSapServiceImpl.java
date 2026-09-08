@@ -11,7 +11,6 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
@@ -28,13 +27,9 @@ import ar.com.avaco.premec.sap.dto.ServiceCallReclamoListDTO;
 import ar.com.avaco.utils.DateUtils;
 import ar.com.avaco.ws.service.AbstractSapService;
 import ar.com.avaco.ws.service.PageDTO;
-import ar.com.avaco.ws.service.impl.SQLServerConnection;
 
 @Service
 public class ServiceCallSapServiceImpl extends AbstractSapService implements ServiceCallSapService {
-
-	@Autowired
-	private SQLServerConnection sqlcon;
 
 	@Override
 	public Long create(ServiceCallCreateSapDTO dto) throws SapBusinessException {
@@ -47,35 +42,35 @@ public class ServiceCallSapServiceImpl extends AbstractSapService implements Ser
 
 	@Override
 	public void valorar(String cuitConC, Long id, Integer valoracion) throws SapBusinessException {
-		
+
 		Map<String, Object> mapValoracion = new HashMap<String, Object>();
 		mapValoracion.put("LineNum", 0);
 		mapValoracion.put("U_valoracionreclamo", valoracion);
-		
-		List<Map<String, Object>> listValoracion = new ArrayList<Map<String,Object>>();
+
+		List<Map<String, Object>> listValoracion = new ArrayList<Map<String, Object>>();
 		listValoracion.add(mapValoracion);
 		Map<String, Object> mapServiceCall = new HashMap<String, Object>();
 		mapServiceCall.put("ServiceCallActivities", listValoracion);
-		
+
 		HttpEntity<Map<String, Object>> httpEntity = new HttpEntity<Map<String, Object>>(mapServiceCall);
-		
+
 		String serviceCallUrl = urlSAP + "/ServiceCalls({idServiceCall})";
 		serviceCallUrl = serviceCallUrl.replace("{idServiceCall}", id.toString());
 		getRestTemplate().doExchange(serviceCallUrl, HttpMethod.PATCH, httpEntity, Object.class);
 	}
 
 	@Override
-	public List<ServiceCallMachineStatsDTO> getEstadisticasMaquinaParada(String machine, String periodosJson) {
+	public List<ServiceCallMachineStatsDTO> getEstadisticasMaquinaParada(String maquinasJson, String periodosJson) {
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("EXEC SP_GetMachineReclamoStats ?, ?");
+		sql.append("EXEC SP_GetMultipeMachineReclamoStats ?, ?");
 
 		List<ServiceCallMachineStatsDTO> result = new ArrayList<>();
 
 		try (Connection conn = sqlcon.getConnection(); PreparedStatement stmt = conn.prepareStatement(sql.toString())) {
 
-			stmt.setString(1, machine);
+			stmt.setString(1, maquinasJson);
 			stmt.setString(2, periodosJson);
 
 			try (ResultSet rs = stmt.executeQuery()) {
@@ -207,7 +202,8 @@ public class ServiceCallSapServiceImpl extends AbstractSapService implements Ser
 
 		StringBuilder sql = new StringBuilder();
 
-		sql.append("SELECT COUNT(*) OVER() AS TotalRegistros,CustomerName,CustomerCode,ValoracionReclamo,ServiceCallID,Asunto,EstadoServiceCall,estadoReclamo,")
+		sql.append(
+				"SELECT COUNT(*) OVER() AS TotalRegistros,CustomerName,CustomerCode,ValoracionReclamo,ServiceCallID,Asunto,EstadoServiceCall,estadoReclamo,")
 				.append("FechaCreacion,HoraCreacion,FechaInicioActividad,FechaFinActividad,")
 				.append("EquipmentCardNum,ManufacturerSerialNum,InternalSN,ItemCode,ItemName, DetalleReclamoRechazado ")
 				.append("FROM VW_ServiceCalls_Reclamos WHERE CustomerCode = ? ");
@@ -267,11 +263,11 @@ public class ServiceCallSapServiceImpl extends AbstractSapService implements Ser
 		sql.append("ORDER BY FechaCreacion DESC");
 
 		if (filter.getPageSize() != null && filter.getPage() != null) {
-		    sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ");
-		    params.add(filter.getPage());
-		    params.add(filter.getPageSize());
+			sql.append(" OFFSET ? ROWS FETCH NEXT ? ROWS ONLY ");
+			params.add(filter.getPage());
+			params.add(filter.getPageSize());
 		}
-		
+
 		List<ServiceCallReclamoListDTO> result = new ArrayList<>();
 		Integer totalReg = 0;
 
@@ -298,7 +294,7 @@ public class ServiceCallSapServiceImpl extends AbstractSapService implements Ser
 		page.setPage(filter.getPage());
 		page.setTotalReg(totalReg);
 		page.setPageSize(filter.getPageSize());
-		
+
 		return page;
 	}
 
@@ -324,7 +320,7 @@ public class ServiceCallSapServiceImpl extends AbstractSapService implements Ser
 		dto.setInternalSN(rs.getString("InternalSN"));
 		dto.setItemCode(rs.getString("ItemCode"));
 		dto.setItemName(rs.getString("ItemName"));
-		
+
 		String valoracion = rs.getString("ValoracionReclamo");
 		dto.setValoracion(valoracion != null ? Integer.parseInt(valoracion) : null);
 

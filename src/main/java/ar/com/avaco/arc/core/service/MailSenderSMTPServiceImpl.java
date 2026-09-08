@@ -60,7 +60,7 @@ public class MailSenderSMTPServiceImpl implements MailSenderSMTPService {
 	public void sendMail(String from, String to, String subject, String msg, List<File> archivos) {
 		List<String> messages = new ArrayList<String>();
 		messages.add(msg);
-		String[] arrayTo = { to };
+		String[] arrayTo = getMails(to);
 		sendMail(from, arrayTo, null, subject, messages, archivos);
 	}
 
@@ -131,7 +131,7 @@ public class MailSenderSMTPServiceImpl implements MailSenderSMTPService {
 	public void sendMail(String from, String to, String bccTo, String subject, String msg, List<File> archivos) {
 		List<String> messages = new ArrayList<String>();
 		messages.add(msg);
-		String[] arrayTo = { to };
+		String[] arrayTo = getMails(to);
 		String[] arrayBcc = { bccTo};
 		if (bccTo != null) {
 			sendMail(from, arrayTo, arrayBcc, subject, messages, archivos);
@@ -149,7 +149,15 @@ public class MailSenderSMTPServiceImpl implements MailSenderSMTPService {
 		String[] arrayTo = { toErrores };
 		String[] arrayBcc = { toErroresCC };
 		sendMail(from, arrayTo, arrayBcc, subject, messages, archivos);
-		
+	}
+	
+	private String[] getMails(String to) {
+		if (to.contains(";")) {
+			return to.split(";");
+		} else {
+			String[] toarray = { to };
+			return toarray;
+		}
 	}
 
 }

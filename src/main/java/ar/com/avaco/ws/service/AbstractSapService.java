@@ -1,11 +1,13 @@
 package ar.com.avaco.ws.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.google.gson.Gson;
 
 import ar.com.avaco.factory.RestTemplateFactory;
 import ar.com.avaco.factory.RestTemplatePremec;
+import ar.com.avaco.ws.service.impl.SQLServerConnection;
 
 public abstract class AbstractSapService {
 
@@ -30,6 +32,9 @@ public abstract class AbstractSapService {
 	@Value("${email.errores.cc}")
 	protected String toErroresCC;
 
+	@Autowired
+	protected SQLServerConnection sqlcon;
+	
 	protected Gson gson = new Gson();
 
 	private RestTemplatePremec restTemplate;

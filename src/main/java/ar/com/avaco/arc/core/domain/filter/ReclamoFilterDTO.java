@@ -1,6 +1,8 @@
 package ar.com.avaco.arc.core.domain.filter;
 
-public class ReclamoFilterDTO extends AbstractFilter {
+import ar.com.avaco.ws.service.filter.SortPageDTO;
+
+public class ReclamoFilterDTO extends SortPageDTO {
 
 	private Integer nroReclamo;
 	private String internalSerialNum;

@@ -3,42 +3,29 @@
  */
 package ar.com.avaco.ws.rest.dto;
 
-import org.springframework.http.HttpStatus;
+import ar.com.avaco.ws.service.filter.PageResponse;
 
-import ar.com.avaco.premec.sap.dto.ServiceCallReclamoListDTO;
-import ar.com.avaco.ws.service.PageDTO;
-import ar.com.avaco.ws.service.PageResponseDTO;
-
-/**
- * 
- *
- */
 public class JSONResponse {
 
+	public static final String ERROR = "ERROR";
+	public static final String OK = "OK";
+
+	private Boolean ok;
 	private String status;
 	private Object data;
-	private PageResponseDTO page;;
+
+	private String error;
+
+	private PageResponse page;
 
 	public JSONResponse() {
 
 	}
 
-	public JSONResponse(String status, PageDTO<?> pageDTO) {
+	public JSONResponse(String status, Object data) {
+		super();
 		this.status = status;
-		this.data = pageDTO.getList();
-		this.page = new PageResponseDTO();
-		this.page.setPage(pageDTO.getPage());
-		this.page.setPageSize(pageDTO.getPageSize());
-		this.page.setTotalReg(pageDTO.getTotalReg());
-	}
-
-	public JSONResponse(HttpStatus status, PageDTO<?> pageDTO) {
-		this.status = status.name();
-		this.data = pageDTO.getList();
-		this.page = new PageResponseDTO();
-		this.page.setPage(pageDTO.getPage());
-		this.page.setPageSize(pageDTO.getPageSize());
-		this.page.setTotalReg(pageDTO.getTotalReg());
+		this.data = data;
 	}
 
 	public String getStatus() {
@@ -57,17 +44,28 @@ public class JSONResponse {
 		this.data = data;
 	}
 
-	public PageResponseDTO getPage() {
+	public Boolean getOk() {
+		return ok;
+	}
+
+	public void setOk(Boolean ok) {
+		this.ok = ok;
+	}
+
+	public String getError() {
+		return error;
+	}
+
+	public void setError(String error) {
+		this.error = error;
+	}
+
+	public PageResponse getPage() {
 		return page;
 	}
 
-	public void setPage(PageResponseDTO page) {
+	public void setPage(PageResponse page) {
 		this.page = page;
-	}
-
-	public void setStatus(HttpStatus status) {
-		this.status = status.name();
-
 	}
 
 }

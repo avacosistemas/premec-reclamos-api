@@ -4,22 +4,22 @@ import java.util.List;
 
 public class MachineReclamoStatsRequestDTO {
 
-    private String machine;
-    private List<PeriodoDTO> periodos;
+	private List<String> maquinas;
+	private List<PeriodoDTO> periodos;
 
-    public String getMachine() {
-        return machine;
-    }
+	public List<String> getMaquinas() {
+		return maquinas;
+	}
 
-    public void setMachine(String machine) {
-        this.machine = machine;
-    }
+	public void setMaquinas(List<String> maquinas) {
+		this.maquinas = maquinas;
+	}
 
-    public List<PeriodoDTO> getPeriodos() {
-        return periodos;
-    }
+	public List<PeriodoDTO> getPeriodos() {
+		return periodos;
+	}
 
-    public void setPeriodos(List<PeriodoDTO> periodos) {
-        this.periodos = periodos;
-    }
+	public void setPeriodos(List<PeriodoDTO> periodos) {
+		this.periodos = periodos;
+	}
 }

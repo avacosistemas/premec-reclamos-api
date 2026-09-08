@@ -32,7 +32,7 @@ public class TipoProblemaMaquinaRestController
 			tipos = this.service.list();
 		}
 		JSONResponse response = new JSONResponse();
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		response.setData(tipos);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}

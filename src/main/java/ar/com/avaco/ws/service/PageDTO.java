@@ -3,6 +3,7 @@ package ar.com.avaco.ws.service;
 import java.util.List;
 
 import ar.com.avaco.ws.rest.dto.DTOEntity;
+import ar.com.avaco.ws.service.filter.PageResponse;
 
 public class PageDTO<DTO>  {
 
@@ -14,6 +15,15 @@ public class PageDTO<DTO>  {
 
 	private Integer page;
 
+	public PageResponse toPageRepsponse() {
+		PageResponse pr = new PageResponse();
+		pr.setPage(page);
+		pr.setPageSize(pageSize);
+		pr.setSearch(null);
+		pr.setTotalReg(totalReg);
+		return pr;
+	}
+	
 	public List<DTO> getList() {
 		return list;
 	}

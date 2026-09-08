@@ -40,10 +40,13 @@ public class ReclamoRestController {
 	private ReclamoEstadisticasEPService estadisticasService;
 
 	@RequestMapping(value = "/reclamo", method = RequestMethod.GET, produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<JSONResponse> create(ReclamoFilterDTO reclamoFilterDTO) {
+	public ResponseEntity<JSONResponse> list(ReclamoFilterDTO reclamoFilterDTO) {
 		String cuit = SecurityContextHolder.getContext().getAuthentication().getName();
 		PageDTO<ServiceCallReclamoListDTO> pageDTO = this.service.list("C" + cuit, reclamoFilterDTO);
-		JSONResponse response = new JSONResponse(HttpStatus.OK, pageDTO);
+		JSONResponse response = new JSONResponse();
+		response.setData(pageDTO.getList());
+		response.setPage(pageDTO.toPageRepsponse());
+		response.setOk(true);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
@@ -64,7 +67,7 @@ public class ReclamoRestController {
 			throw new ErrorValidationException("No se pudo crear el reclamo", error);
 		}
 		JSONResponse response = new JSONResponse();
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 	
@@ -85,7 +88,7 @@ public class ReclamoRestController {
 			throw new ErrorValidationException("No se pudo valorar el reclamo", error);
 		}
 		JSONResponse response = new JSONResponse();
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
@@ -94,15 +97,19 @@ public class ReclamoRestController {
 		String cuit = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<ServiceCallActivityDTO> listActividades = this.service.listActividades("C" + cuit, idServiceCall);
 		JSONResponse response = new JSONResponse();
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		response.setData(listActividades);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
 	@PostMapping("/reclamo/estadisticas/maquina-parada")
 	public ResponseEntity<?> getMachineStats(@RequestBody MachineReclamoStatsRequestDTO dto) {
-		EstadisticaMaquinaDTO estadisticasMaquinaParada = this.estadisticasService.getEstadisticasMaquinaParada(dto);
-		return ResponseEntity.ok(estadisticasMaquinaParada);
+		Map<String, EstadisticaMaquinaDTO> estadisticasMaquinaParada = this.estadisticasService
+				.getEstadisticasMaquinaParada(dto);
+		JSONResponse response = new JSONResponse();
+		response.setData(estadisticasMaquinaParada);
+		response.setStatus(JSONResponse.OK);
+		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 
 }

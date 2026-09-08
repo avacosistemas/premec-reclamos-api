@@ -35,7 +35,7 @@ public class ProblemaMaquinaRestController
 		
 		List<ProblemaMaquinaDTO> list = this.service.listFilter(filter);
 		response.setData(list);
-		response.setStatus(HttpStatus.OK);
+		response.setStatus(JSONResponse.OK);
 		return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
 	}
 

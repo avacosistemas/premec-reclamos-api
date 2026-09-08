@@ -51,7 +51,7 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
 			}
     		response.setData(dtos);
     	}
-		response.setStatus(HttpStatus.OK);	
+		response.setStatus(JSONResponse.OK);	
         return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
     }
     
@@ -68,7 +68,7 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
     				.collect(Collectors.toList());    		
     		response.setData(dtos);
     	}
-		response.setStatus(HttpStatus.OK);	
+		response.setStatus(JSONResponse.OK);	
         return new ResponseEntity<JSONResponse>(response, HttpStatus.OK);
     }
     
@@ -81,7 +81,7 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
     	JSONResponse response = null;
     	if(entity == null) {
     		response = new JSONResponse();
-    		response.setStatus(HttpStatus.INTERNAL_SERVER_ERROR);
+    		response.setStatus(JSONResponse.ERROR);
     		response.setData(entity);
     		httpStatus = HttpStatus.NOT_FOUND;
     	}else {
@@ -126,7 +126,7 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
 	protected <T> JSONResponse  getResponseOK(T data) {
 		JSONResponse response = new JSONResponse();
         response.setData(data);
-   		response.setStatus(HttpStatus.OK);
+   		response.setStatus(JSONResponse.OK);
 		return response;
 	}
     
@@ -141,7 +141,7 @@ public abstract class AbstractDTORestController<RDTO extends DTOEntity<ID>, ID e
         	e.printStackTrace();
         	JSONResponse response = new JSONResponse();
             response.setData("No se puede borrar el elemento seleccionado. Es probable que esté asociado por otra sección de la aplicación.");
-       		response.setStatus(HttpStatus.OK);
+       		response.setStatus(JSONResponse.OK);
        		return new ResponseEntity<JSONResponse>(response, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<JSONResponse>(getResponseOK(true),HttpStatus.OK);

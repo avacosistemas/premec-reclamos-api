@@ -1,12 +1,22 @@
-package ar.com.avaco.ws.service;
+package ar.com.avaco.ws.service.filter;
 
-public class PageResponseDTO {
+public class PageResponse {
 
 	private Integer totalReg;
 
+	private Integer page;
+
 	private Integer pageSize;
 
-	private Integer page;
+	private String search;
+
+	public String getSearch() {
+		return search;
+	}
+
+	public void setSearch(String search) {
+		this.search = search;
+	}
 
 	public Integer getPage() {
 		return page;

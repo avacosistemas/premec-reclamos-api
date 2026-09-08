@@ -15,14 +15,14 @@ public class ErrorResponse extends JSONResponse {
 	}
 
 	public ErrorResponse(HttpStatus status, Object data, String message, Map<String, String> errors) {
-		super.setStatus(status);
+		super.setStatus(JSONResponse.ERROR);
 		super.setData(data);
 		this.message = message;
 		this.errors = errors;
 	}
 
 	public ErrorResponse(HttpStatus status, Object data, String message, String error) {
-		super.setStatus(status);
+		super.setStatus(JSONResponse.ERROR);
 		super.setData(data);
 		this.message = message;
 		this.error = error;
